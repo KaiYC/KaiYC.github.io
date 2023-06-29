@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>衛生福利部癌症研究計畫112年度專題研習會</title>
+  </head>
+  <style>
+    #AMHead{
+      /* 第一場 */
+      /* 設定表頭背景 */
+      background-color: #3972c4;
+      /* 表頭文字顏色*/
+      color: white;
+      /* 文字大小 */
+      font-size: large;
+      /* 表頭左邊邊界 形式 寛度 顏色 */
+      border-left: solid 3px #3972c4;
+      /* 表頭右邊邊界 形式 寛度 顏色 */
+      border-right: solid 3px #3972c4;
+    }
+    #PMHead{
+      /* 第二場 */
+      /* 設定表頭背景 */
+      background-color: #f79646;
+      /* 表頭文字顏色*/
+      color: white;
+      /* 文字大小 */
+      font-size: large;
+      /* 表頭左邊邊界 形式 寛度 顏色 */
+      border-left: solid 3px #f79646;
+      /* 表頭右邊邊界 形式 寛度 顏色 */
+      border-right: solid 3px #f79646;
+    }
+    #AMTable tbody tr{
+      /* 第一場每列邊界 形式 寬度 顏色 */
+      border-right: 3px solid #3972c4;
+      border-left: 3px solid #3972c4;
+      border-bottom: 3px solid #3972c4;
+    }
+    #PMTable tbody tr{
+      /* 第二場每列邊界 形式 寬度 顏色 */
+      border-right: 3px solid #f28e02;
+      border-left: 3px solid #f28e02;
+      border-bottom: 3px solid #f28e02;
+    }
+    .noAuthority{
+      /* 未授權的背景 */
+      color: rgb(80, 80, 80);
+    }
+    td{
+      /* 每一欄的內距 上下 左右 */
+      padding: 10px 0px;
+    }
+    .headTopic{
+     /* 表頭標題欄設定 */
+     /* 字元寬度 */
+     letter-spacing: 3em;
+     /* 左邊內距 */
+     padding-left: 2em;
+     /* 對齊方向 */
+     text-align: center;
+     /* width: auto; */
+   }
+   .time{
+     /* 時間欄設定 */
+     /* 字體大小 */
+     font-size: 1em;
+     /* 字體對齊 */
+     text-align: left;
+     /* 左邊內距 */
+     padding-left: 10px;
+   }
+   .topic{
+     /* 主講人欄設定 */
+     /* 字體大小 */
+     font-size: large;
+     /* 字體粗細 */
+     font-weight: bold;
+     /* 右邊內距 */
+     padding-right: 1em;
+     /* 左邊內距 */
+     padding-left: 1em;
+     /* 對齊方向 */
+     text-align: left;
+   }
+   
+
+   #AMTable tbody .tableContent:hover{
+     /* 滑鼠移入時動畫 */
+     /* 背景顏色 */
+     background-color: #3973c4d0;
+     /* 透明度 */
+     opacity: 0.7;
+     /* 字體顏色 */
+     color: white;
+     /* 指標樣式 */
+     cursor: pointer;
+   }
+   #PMTable tbody .tableContent:hover{
+     /* 滑鼠移入時動畫 */
+     /* 背景顏色 */
+     background-color: rgba(217, 172, 66, 0.796);
+     /* 透明度 */
+     opacity: 0.7;
+     /* 字體顏色 */
+     color: white;
+     /* 指標樣式 */
+     cursor: pointer;
+   }
+   .speaker strong{
+     /* 講者姓名粗體設定 */
+     /* 字體粗細 */
+     font-weight: bolder;
+     /* 字體大小 */
+     font-size: large;
+   }
+  </style>
+  <script>
+    //會議資料維護
+    const morningSession = {
+        //會議名字
+        'title' : 'mRNA 癌症疫苗開發',
+        //主視覺連結
+        'banner' : 'https://drive.google.com/uc?export=view&id=1WBKdRiIYvTrs6X0mhSPS349lWphlmxlf',
+        'agenda' : [
+            //議程資料[主持人致詞(0), Speaker1(1), Speaker2(2), Speaker(3), Speaker(4), Speaker(5)] 依會議調整 
+            //[時間(0), 講題(1), 主講人(2), 主講人機構(3), 影片連結(若講者無授權就寫講者英文簡寫以便後續設定)(4), 授權(5)]
+            ['09:00-09:10', '主持人致詞', '許惠恒 副院長', '國家衛生研究院', 'https://youtu.be/M0hi6_8pPg0', 'authority'],
+            ['09:10-09:40', 'mRNA癌症疫苗的發展現況與未來策略', '李岳倫 研究員', '國家衛生研究院癌症研究所', 'https://youtu.be/alQGQRdOMkk', 'authority'],
+            ['09:40-10:10', 'mRNA癌症疫苗的設計和優化', '陶秘華 研究員', '中央研究院生物醫學科學研究所', 'https://youtu.be/QpWTFRVztJw', 'authority'],
+            ['10:30-11:00', '突破免疫優勢現象的精準奈米疫苗設計', '胡哲銘 長聘副研究員', '中央研究院生物醫學科學研究所', 'https://youtu.be/yviwZvHlr08', 'authority'],
+            ['11:00-11:30', 'mRNA疫苗的研發與生產', '劉士任 副所長', '國家衛生研究院感染症與疫苗研究所', 'https://youtu.be/9Tux_KcbB1w', 'authority'],
+            ['11:30-12:00', '未來醫學平台–mRNA：從產業面的實務分享', '李宜真 總經理', '莫德納台灣股份有限公司', 'https://youtu.be/UvKrcCS4J-Y', 'authority']
+        ]
+    }
+    const afternoonSession = {
+        // 會議名字
+        'title' : '真實世界數據與證據於癌症預防與早期診斷應用',
+        //主視覺連結
+        'banner' : 'https://drive.google.com/uc?export=view&id=1Wc8s3sI-feQqIuiuciK8PmK_cQzznQ9d',
+        'agenda' : [
+            //議程資料[主持人致詞(0), Speaker1(1), Speaker2(2), Speaker(3), Speaker(4), Speaker(5)] 依會議調整
+            //議程資料 [時間(0), 講題(1), 主講人(2), 主講人機構(3), 影片連結(若講者無授權就寫講者英文簡寫以便後續設定)(4), 授權(5)]
+            ['14:00-14:10', '主持人致詞', '李岳倫 副處長', '國家衛生研究院學術發展處', 'https://youtu.be/taQWy1vL27s', 'authority'],
+            ['14:10-14:40', '導入真實世界數據於癌症預防與早期診斷之機會與挑戰', '楊奕馨 研究員', '國家衛生研究院癌症研究所', 'https://youtu.be/1dGRgYvzlMA', 'authority'],
+            ['14:40-15:10', '應用真實世界數據的臨床研究設計', '王亞蕾 資深審查員', '醫藥品查驗中心', 'https://youtu.be/YOXVTDrZpDg', 'authority'],
+            ['15:30-16:00', 'ChatGPT和癌症治療：大型語言模型的未來影響', '李建璋 副主任', '臺大醫院智慧醫療中心', 'https://youtu.be/vN6MFE3FTz0', 'authority'],
+            ['16:00-16:30', '真實世界的上呼吸消化道癌症數據分析與智能輔助診療', '沈偉誌 教授', '中山醫學大學醫學資訊學系', 'https://youtu.be/-rx281Bi03Q', 'authority'],
+            ['16:30-17:00', '真實世界的數據分析與肝癌的預防與早期診斷', '蘇東弘 主治醫師', '臺大醫院內科部', 'https://youtu.be/caDRZawVl_E', 'authority']
+        ]
+    }
+    
+    function contentGenerate(){
+        //生成第一場會議內容
+        let amSession = ''
+        //製作Banner部份
+            //生成Banner外層
+            let amBannerBlock = `
+                <div class="banner mt-2">
+                    <img class="img-fluid" src="${morningSession.banner}" alt="${morningSession.title}">
+                </div>
+            `
+        //將bannerBlock放入amSession
+        amSession += amBannerBlock
+        //製作議程表格
+            //生成表格
+            let amAgenda = `
+                <table class="align-middle text-wrap" id="AMTable">
+                    <thead class="text-center" id="AMHead">
+                        <tr>
+                        <th scope="col" class='col-1'></th>
+                        <th scope="col" class="headTopic col-6">講題</th>
+                        <th scope="col" class'col-5>主講人</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `
+            //利用迴圈生成議程內容
+            for (let i=0;i<morningSession.agenda.length;i++){
+                amAgenda += `
+                        <tr class='tableContent ${morningSession.agenda[i][5]}' id='${morningSession.agenda[i][4]}'>
+                            <td class='time'>${morningSession.agenda[i][0]}</td>
+                            <td class='topic'>${morningSession.agenda[i][1]}</td>
+                            <td class='speaker'><strong>${morningSession.agenda[i][2]}</strong></br>${morningSession.agenda[i][3]}</td>
+                        </tr>                               
+                `
+            }
+            amAgenda += `
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                        <td colspan="3" class="text-start"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            `
+            amSession += amAgenda
+        //將第一場會議內容帶入html
+        document.getElementById('morning').innerHTML = amSession
+
+        //生成第二場會議內容
+        let pmSession = ''
+        //製作Banner部份
+            //生成Banner外層
+            let pmBannerBlock = `
+                <div class="banner mt-2">
+                    <img class="img-fluid" src="${afternoonSession.banner}" alt="${afternoonSession.title}">
+                </div>
+            `
+        //將bannerBlock放入amSession
+        pmSession += pmBannerBlock
+        //製作議程表格
+            //生成表格
+            let pmAgenda = `
+                <table class="align-middle text-wrap mb-3" id="PMTable">
+                    <thead class="text-center" id="PMHead">
+                        <tr>
+                        <th scope="col" class='col-1'></th>
+                        <th scope="col" class="headTopic col-6">講題</th>
+                        <th scope="col" class='col-5'>主講人</th>
+                        </tr>
+                    </thead>
+                    <tbody id='PMBody'>
+            `
+            //利用迴圈生成議程內容
+            for (let i=0;i<afternoonSession.agenda.length;i++){
+                pmAgenda += `
+                        <tr class='tableContent ${afternoonSession.agenda[i][5]}' id='${afternoonSession.agenda[i][4]}'>
+                            <td class='time'>${afternoonSession.agenda[i][0]}</td>
+                            <td class='topic'>${afternoonSession.agenda[i][1]}</td>
+                            <td class='speaker'><strong>${afternoonSession.agenda[i][2]}</strong></br>${afternoonSession.agenda[i][3]}</td>
+                        </tr>                               
+                `
+            }
+            pmAgenda += `
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                        <td colspan="3" class="text-start"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            `
+            pmSession += pmAgenda
+        //將第二場會議內容帶入html
+        document.getElementById('afternoon').innerHTML = pmSession
+        
+
+    // 設定滑鼠監聽
+        // 講者無授權時使用
+        // let noAuthorityInfo = document.getElementsByClassName('noAuthority');
+        // 暫存無授權的那欄資料 querySelector('#無授權的講者英文簡寫')，有多個的話要各自設定
+        // let oriSu = document.querySelector('#AZ').innerHTML
+        // 設定滑鼠點擊出現的文字和效果
+        // let info = `
+        //     <td colspan="3" class="text-center" style="height: 550px; color: black; font-size: large; font-weight: bolder;  background-color: #ccc; opacity: 0.7;">因授權關係無法提供影片，請見諒!</td>
+        // `
+        // 監聽滑鼠點擊無授權欄位和移出無授權欄位
+        // for(var i=0; i<noAuthorityInfo.length; i++){
+            //當滑鼠點擊時，將內容換為上面設定的文字(info)
+            // noAuthorityInfo[i].addEventListener('click',function(event){
+            // document.getElementById(this.id).innerHTML=info;
+            // })
+            //當滑鼠移開時，將內容還原為先前暫存的內容，用if(){}判斷，if(this.id == '無授權的講者英文簡寫'){document.getElementById(this.id).innerHTML = 先前設定的變數(oriSu)}，有多個可以搭配else if來判斷
+            // noAuthorityInfo[i].addEventListener('mouseleave',function(event){
+            // if(this.id == 'AZ'){document.getElementById(this.id).innerHTML = oriSu;}
+            // })}
+        
+        // 監聽滑鼠點擊欄位，並開啟連結
+        // 找出html中class為'tableContent'的內容
+        let hyperlink = document.getElementsByClassName('tableContent authority');
+        for(var i=0; i<hyperlink.length; i++){
+            hyperlink[i].addEventListener('click',function(event){
+            let videoLink = this.id
+            console.log(videoLink)
+            window.open(videoLink);
+            })
+        }
+    }
+    window.onload = contentGenerate
+  </script>
+  <body>
+    <!-- 頁面架構 -->
+    <!-- 外層容器 -->
+    <div class="container-xl">
+        <div class="row mt-2">
+            <div class="col-sm-12 col-xl-6" id="morning"></div>
+            <div class="col-sm-12 col-xl-6" id="afternoon"></div>
+        </div>
+        
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>
