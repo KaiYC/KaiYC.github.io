@@ -1,1 +1,741 @@
-Hello World
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>民眾滿意度調查問卷</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<style>
+    /* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+    */
+    /* CSS reset */
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed, 
+    figure, figcaption, footer, header, hgroup, 
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+    /* HTML5 display-role reset for older browsers */
+    article, aside, details, figcaption, figure, 
+    footer, header, hgroup, menu, nav, section {
+        display: block;
+    }
+    body {
+        line-height: 1;
+    }
+    ol, ul {
+        list-style: none;
+    }
+    blockquote, q {
+        quotes: none;
+    }
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content: '';
+        content: none;
+    }
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    /*---------------------------------------------*/
+
+    .formContainer{
+        padding: 20px;
+        width: 540px;
+        margin: auto;
+    }
+
+    .surveyQusetionTitle, .surveyQusetionTable{
+        padding: 10px 0px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #185abd;
+        line-height: 3ex;
+    }
+
+    #questionOfAge, #questionOfGender, #questionOfTherapy, #questionOfClass, #questionofTable, #questionOfCommute, #questionOfTime{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .inputArea{
+        padding: 5px;
+        font-size: 1.1em;
+    }
+
+    .tableTitle{
+        display: grid;
+        grid-template-columns: 40% 12% 12% 12% 12% 12%;
+    }
+
+    .tableTitleAreaS5{
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+
+    .tableTitleArea{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tableTitleArea .tableTitleDisc{
+        flex-grow: 1;
+        padding: 5px 3px;
+        line-height: 1.3em;
+        font-size: 1.1em;
+    }
+    .tableTitleArea .tableTitleScore{
+        font-size: 1.1em;
+        padding: 5px;
+    }
+    .questionofTable{
+        display: grid;
+        grid-template-rows: repeat(11, 1fr);
+    }
+
+    .subquestionTable{
+        display: grid;
+        grid-template-columns: 40% 12% 12% 12% 12% 12%;
+    }
+
+    .subquestionTable:hover{
+        border-radius: 10px;
+        border-bottom: 1px solid rgba(187, 187, 187, 0.315) ;
+        box-shadow: 5px 5px 5px rgba(216, 215, 215, 0.336);
+    }
+
+    .subquestionTable label{
+        font-size: 1.2em;
+        padding: 2ex;
+        line-height: 1.3em;
+        align-self: center;
+    }
+    .subquestionTable input{
+        align-self: center;
+        justify-self: center;
+        width: 30px;
+        height: 30px;
+        margin: 0;
+                
+    }
+
+    .invalid, .invalid:focus{
+      border: 1px solid red;
+      background-color: rgba(223, 140, 140, 0.548);
+    }
+
+    .errorMsg{
+      display: none;
+      opacity: 0;
+      position: relative;
+      left: 5.3em;
+      color: #fff;
+      font-size: 0.9em;
+      font-weight: bolder;
+      width: fit-content;
+      margin: 10px 0px;
+      padding: 10px;
+      border: 1px dotted ,rgba(128, 128, 128, 0.39);
+      border-radius: 6px;
+      background-color: #739798;
+    }
+    .errorMsg::before{
+      content: "";
+      position: absolute;
+      top: -25%;
+      left: 5%;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid #739798;
+    }
+
+    .errorMsgShow{
+      display: block;
+      opacity: 1;
+    }
+
+    @media (min-width: 540px) {
+        
+    }
+    @media (min-width: 768px) {
+        .formContainer{
+            padding: 20px;
+            width: 800px;
+            margin: auto;
+        }
+        
+        #questionOfAge, #questionOfGender, #questionOfTherapy, #questionOfClass, #questionOfCommute, #questionOfTime{
+            display: flex;
+            flex-direction: row;
+        }
+    }
+    @media (min-width: 920px) {
+        .formContainer{
+            padding: 20px;
+            width: 1024px;
+            margin: auto;
+        }
+    }
+
+</style>
+<body>
+    <div class="formContainer">
+        <div class="surveyForm">
+          <div class="surveyQuestions">
+            <p class="surveyQusetionTitle">一、	請問您的年齡是：</p>
+            <div id="questionOfAge" class="">
+              <div class="inputArea">
+                <input type="radio" id="age1" name="age" value="30歲以下">
+                <label for="age1">(1) 30歲以下</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="age2" name="age" value="30-39歲">
+                <label for="age2">(2) 30-39歲</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="age3" name="age" value="40-49歲">
+                <label for="age3">(3) 40-49歲</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="age4" name="age" value="50-59歲">
+                <label for="age4">(4) 50-59歲</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="age5" name="age" value="60-69歲">
+                <label for="age5">(5) 60-69歲</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="age6" name="age" value="70-79歲">
+                <label for="age6">(6) 70-79歲</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="age7" name="age" value="80歲以上">
+                <label for="age7">(7) 80歲以上</label>
+              </div>
+            </div>
+            <p class="surveyQusetionTitle">二、	請問您的性別是：</p>
+            <div id="questionOfGender">
+              <div class="inputArea">
+                <input type="radio" id="gender1" name="gender" value="男">
+                <label for="gender1">(1) 男</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="gender2" name="gender" value="女">
+                <label for="gender2">(2) 女</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="gender3" name="gender" value="其他">
+                <label for="gender3">(3) 其他（雙性別以及跨性別者）</label>
+              </div>
+            </div>
+            <p class="surveyQusetionTitle">三、	請問您接受的醫療服務類型？（可複選）：</p>
+            <div id="questionOfTherapy">
+              <div class="inputArea">
+                <input type="checkbox" id="therapy1" name="therapy" value="遠距會診">
+                <label for="therapy1">(1) 遠距會診</label>
+              </div>
+              <div class="inputArea">
+                <input type="checkbox" id="therapy2" name="therapy" value="巡迴醫療">
+                <label for="therapy2">(2) 巡迴醫療</label>
+              </div>
+              <div class="inputArea">
+                <input type="checkbox" id="therapy3" name="therapy" value="居家醫療">
+                <label for="therapy3">(3) 居家醫療</label>
+              </div>
+              <div class="inputArea inputwithOther">
+                <input type="checkbox" id="therapy4" name="therapy" value="其他">
+                <label for="therapy4">(4) 其他</label>
+                <input type="text" id="therapy4Text" name="therapy" value="">
+                <span id="therapy4TextError" class="errorMsg">請輸入接受的醫療服務類型</span>
+              </div>
+            </div>
+            <p class="surveyQusetionTitle">四、	請問您是做哪一科別的會診服務？（可複選）：</p>
+            <div id="questionOfClass">
+              <div class="inputArea">
+                <input type="checkbox" id="class1" name="class" value="家醫科">
+                <label for="class1">(1) 家醫科</label>
+              </div>
+              <div class="inputArea">
+                <input type="checkbox" id="class2" name="class" value="眼科">
+                <label for="class2">(2) 眼科</label>
+              </div>
+              <div class="inputArea">
+                <input type="checkbox" id="class3" name="class" value="新陳代謝科">
+                <label for="class3">(3) 新陳代謝科</label>
+              </div>
+              <div class="inputArea">
+                <input type="checkbox" id="class4" name="class" value="神經內科">
+                <label for="class4">(4) 神經內科</label>
+              </div>
+              <div class="inputArea">
+                <input type="checkbox" id="class5" name="class" value="其他">
+                <label for="class5">(5) 其他</label>
+                <input type="text" id="class5Text" name="class" value="">
+                <span id="class5TextError" class="errorMsg">請輸入接受的會診服務科別</span>
+              </div>
+            </div>
+            <p class="surveyQusetionTable">五、	請問您對此醫療服務滿意度如何？</p>
+            <div class="tableTitle">
+              <div class="tableTitleArea tableTitleAreaS5">
+                <div class="tableTitleDisc">非常滿意</div>
+                <div class="tableTitleScore">5分</div>
+              </div>
+              <div class="tableTitleArea tableTitleAreaS4">
+                <div class="tableTitleDisc">滿意</div>
+                <div class="tableTitleScore">4分</div>
+              </div>
+              <div class="tableTitleArea tableTitleAreaS3">
+                <div class="tableTitleDisc">普通</div>
+                <div class="tableTitleScore">3分</div>
+              </div>
+              <div class="tableTitleArea tableTitleAreaS2">
+                <div class="tableTitleDisc">不滿意</div>
+                <div class="tableTitleScore">2分</div>
+              </div>
+              <div class="tableTitleArea tableTitleAreaS1">
+                <div class="tableTitleDisc">非常不滿意</div>
+                <div class="tableTitleScore">1分</div>
+              </div>
+            </div>
+            <div id="questionofTable">
+              <div class="subquestionTable questionofTable1">
+                <label>您覺得您接受的醫療服務模式是否便利？</label>
+                <input type="radio" id="qot1-5" name="qot1" value="非常滿意">
+                <input type="radio" id="qot1-4" name="qot1" value="滿意">
+                <input type="radio" id="qot1-3" name="qot1" value="普通">
+                <input type="radio" id="qot1-2" name="qot1" value="不滿意">
+                <input type="radio" id="qot1-1" name="qot1" value="非常不滿意">
+              </div>
+              <div class="subquestionTable questionofTable2">
+                <label>您覺得您接受的醫療服務流程是否順暢？</label>
+                <input type="radio" id="qot2-5" name="qot2" value="非常滿意">
+                <input type="radio" id="qot2-4" name="qot2" value="滿意">
+                <input type="radio" id="qot2-3" name="qot2" value="普通">
+                <input type="radio" id="qot2-2" name="qot2" value="不滿意">
+                <input type="radio" id="qot2-1" name="qot2" value="非常不滿意">
+              </div>
+             <div class="subquestionTable questionofTable3">
+                <label>您對於看診速度是否感到滿意？</label>
+                <input type="radio" id="qot3-5" name="qot3" value="非常滿意">
+                <input type="radio" id="qot3-4" name="qot3" value="滿意">
+                <input type="radio" id="qot3-3" name="qot3" value="普通">
+                <input type="radio" id="qot3-2" name="qot3" value="不滿意">
+                <input type="radio" id="qot3-1" name="qot3" value="非常不滿意">
+             </div>
+             <div class="subquestionTable questionofTable4">
+                <label>您對於醫療服務品質是否感到滿意？</label>
+                <input type="radio" id="qot4-5" name="qot4" value="非常滿意">
+                <input type="radio" id="qot4-4" name="qot4" value="滿意">
+                <input type="radio" id="qot4-3" name="qot4" value="普通">
+                <input type="radio" id="qot4-2" name="qot4" value="不滿意">
+                <input type="radio" id="qot4-1" name="qot4" value="非常不滿意">
+             </div>
+             <div class="subquestionTable questionofTable5">
+                <label>您是否覺得此服務對您的疾病追蹤有幫助？</label>
+                <input type="radio" id="qot5-5" name="qot5" value="非常滿意">
+                <input type="radio" id="qot5-4" name="qot5" value="滿意">
+                <input type="radio" id="qot5-3" name="qot5" value="普通">
+                <input type="radio" id="qot5-2" name="qot5" value="不滿意">
+                <input type="radio" id="qot5-1" name="qot5" value="非常不滿意">
+              </div>
+             <div class="subquestionTable questionofTable6">
+                <label>您是否覺得該服務可節省您的「整體就醫診療時間」？</label>
+                <input type="radio" id="qot6-5" name="qot6" value="非常滿意">
+                <input type="radio" id="qot6-4" name="qot6" value="滿意">
+                <input type="radio" id="qot6-3" name="qot6" value="普通">
+                <input type="radio" id="qot6-2" name="qot6" value="不滿意">
+                <input type="radio" id="qot6-1" name="qot6" value="非常不滿意">
+              </div>
+             <div class="subquestionTable questionofTable7">
+                <label>您是否同意此服務可節省您的醫療支出？</label>
+                <input type="radio" id="qot7-5" name="qot7" value="非常滿意">
+                <input type="radio" id="qot7-4" name="qot7" value="滿意">
+                <input type="radio" id="qot7-3" name="qot7" value="普通">
+                <input type="radio" id="qot7-2" name="qot7" value="不滿意">
+                <input type="radio" id="qot7-1" name="qot7" value="非常不滿意">
+              </div>
+             <div class="subquestionTable questionofTable8">
+                <label>您是否同意此服務可節省您的交通成本？</label>
+                <input type="radio" id="qot8-5" name="qot8" value="非常滿意">
+                <input type="radio" id="qot8-4" name="qot8" value="滿意">
+                <input type="radio" id="qot8-3" name="qot8" value="普通">
+                <input type="radio" id="qot8-2" name="qot8" value="不滿意">
+                <input type="radio" id="qot8-1" name="qot8" value="非常不滿意">
+              </div>
+             <div class="subquestionTable questionofTable9">
+                <label>您對於檢查所使用的醫療設備是否感到快速方便，提供您便利性？</label>
+                <input type="radio" id="qot9-5" name="qot9" value="非常滿意">
+                <input type="radio" id="qot9-4" name="qot9" value="滿意">
+                <input type="radio" id="qot9-3"5 name="qot9" value="普通">
+                <input type="radio" id="qot9-2" name="qot9" value="不滿意">
+                <input type="radio" id="qot9-1" name="qot9" value="非常不滿意">
+              </div>
+             <div class="subquestionTable questionofTable10">
+                <label>您對於整體醫療服務是否感到滿意？</label>
+                <input type="radio" id="qot10-5" name="qot10" value="非常滿意">
+                <input type="radio" id="qot10-4" name="qot10" value="滿意">
+                <input type="radio" id="qot10-3"5 name="qot10" value="普通">
+                <input type="radio" id="qot10-2" name="qot10" value="不滿意">
+                <input type="radio" id="qot10-1" name="qot10" value="非常不滿意">
+              </div>
+            </div>
+            <p class="surveyQusetionTitle">六、	請問您到看診地點（如：衛生所、巡迴醫療站等）看病是否方便？（居家醫療免答）</p>
+            <div id="questionOfCommute">
+              <div class="inputArea">
+                <input type="radio" id="commute1" name="commute" value="非常方便">
+                <label for="commute1">(1) 非常方便</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="commute2" name="commute" value="方便">
+                <label for="commute2">(2) 方便</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="commute3" name="commute" value="普通">
+                <label for="commute3">(3) 普通</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="commute4" name="commute" value="不方便">
+                <label for="commute4">(4) 不方便</label>
+              </div>
+            </div>
+            <p class="surveyQusetionTitle">七、	呈上題，請問您大概花費多久時間到達看診地點？（僅指去程）</p>
+            <div id="questionOfTime">
+              <div class="inputArea">
+                <input type="radio" id="time1" name="time" value="10分鐘以內">
+                <label for="time1">(1) 10分鐘以內</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="time2" name="time" value="11-30分鐘">
+                <label for="time2">(2) 11-30分鐘</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="time3" name="time" value="30分鐘-1小時">
+                <label for="time3">(3) 30分鐘-1小時</label>
+              </div>
+              <div class="inputArea">
+                <input type="radio" id="time4" name="time" value="1小時以上">
+                <label for="time4">(4) 1小時以上</label>
+              </div>
+            </div>
+            <p class="surveyQusetionTitle">八、	請問您對整體醫療服務有何其他建議或回饋？</p>
+            <div id="questionOfOther">
+                <textarea type="textarea" id="other" name="other" rows="5" cols="33"></textarea>
+            </div>
+        </div>
+        <button id="submit">送出問卷</button>
+      </div>
+    </div>
+
+  <script>
+        $(function(){
+          $('#submit').on('click', function(){
+            console.log('-----送出表單-----')
+            //Q1 Age
+            var questionOfAge = function(){
+              var answerAge;
+              $('[name="age"]').each(function(){
+                if($(this).prop('checked') === true){
+                  document.getElementById('questionOfAge').classList.remove('invalid');
+                  answerAge = $(this).val();
+                };
+              });
+              if(answerAge !== undefined){
+                 console.log('Q1.有資料')
+                 return answerAge;
+              } else {
+                 console.log('Q1.無資料')
+                 document.getElementById('questionOfAge').classList.add('invalid');
+                 document.querySelector('#questionOfAge input').focus();
+              }
+            };
+
+            //Q2 Gender
+            var questionOfGender = function(){
+              var answerGender;
+              $('[name="gender"]').each(function(){
+                if($(this).prop('checked') === true){
+                  document.getElementById('questionOfGender').classList.remove('invalid');
+                  answerGender = $(this).val();
+                };
+              });
+              if(answerGender !== undefined){
+                 console.log('Q2.有資料')
+                 return answerGender;
+              } else {
+                 console.log('Q2.無資料')
+                 document.getElementById('questionOfGender').classList.add('invalid');
+                 document.querySelector('#questionOfGender input').focus();
+              }
+            };
+
+            //Q3 Therapy
+            var questionOfTherapy = function(){
+              var answerTherapy = [];
+              $('[name="therapy"]').each(function(){
+                if($(this).prop('checked') === true){
+                  //選擇其他選項
+                  if($(this).val() == '其他'){
+                    if($('#therapy4Text').val() != ""){
+                      $('#therapy4Text').removeClass('invalid');
+                      $('#therapy4TextError').removeClass('errorMsgShow');
+                      answerTherapy.push(`其他：${$('#therapy4Text').val()}`);
+                    } else {
+                      $('#therapy4Text').addClass('invalid');
+                      $('#therapy4TextError').addClass('errorMsgShow');
+                      $('#therapy4Text').focus();
+                    }
+                  } 
+                  //有選一般選項
+                  if($(this).val() != '其他'){
+                    answerTherapy.push($(this).val());
+                  }
+                };
+              });
+              if(answerTherapy.length > 0){
+                document.getElementById('questionOfTherapy').classList.remove('invalid');
+                console.log('Q3.有資料');
+                answerTherapy = answerTherapy.toString();
+                return answerTherapy;
+              } else {
+                console.log('Q3.無資料');
+                document.getElementById('questionOfTherapy').classList.add('invalid');
+                document.querySelector('#questionOfTherapy input').focus();
+              }
+              
+            }
+
+            //Q4 Class
+            var questionOfClass = function(){
+              var answerClass = [];
+              $('[name="class"]').each(function(){
+                if($(this).prop('checked') === true){
+                  //選擇其他選項
+                  if($(this).val() == '其他'){
+                    if($('#class5Text').val() != ""){
+                      $('#class5Text').removeClass('invalid');
+                      $('#class5TextError').removeClass('errorMsgShow');
+                      answerClass.push(`其他：${$('#class5Text').val()}`);
+                    } else {
+                      $('#class5Text').addClass('invalid');
+                      $('#class5TextError').addClass('errorMsgShow');
+                      $('#class5Text').focus();
+                    }
+                  } 
+                  //有選一般選項
+                  if($(this).val() != '其他'){
+                    answerClass.push($(this).val());
+                  }
+                };
+              });
+              if(answerClass.length > 0){
+                console.log('Q4.有資料')
+                document.getElementById('questionOfClass').classList.remove('invalid');
+                answerClass =  answerClass.toString();
+                return answerClass;  
+              } else {
+                console.log('Q4.無資料')
+                document.getElementById('questionOfClass').classList.add('invalid');
+                document.querySelector('#questionOfClass input').focus();
+              }
+              
+            }
+
+            //Q5 Table
+            var questionOfTable = function(){
+              var answerTable = [];
+              for(let i=1; i<=10; i++){
+                document.querySelector(`.questionofTable${i}`).classList.add('invalid');
+                $(`[name="qot${i}"]`).each(function(){
+                  if($(this).prop('checked') === true){
+                    answerTable.push($(this).val());
+                    document.querySelector(`.questionofTable${i}`).classList.remove('invalid');
+                  }
+                })
+              }
+              if(answerTable.length > 0){
+                console.log('Q5.有資料')
+                return answerTable;
+              } else {
+                console.log('Q5.無資料')
+                document.querySelector('#questionofTable input').focus(); 
+              }
+            }
+
+            //Q6 Commute
+            var questionOfCommute = function(){
+              var answerCommute;
+              $('[name="commute"]').each(function(){
+                if($(this).prop('checked') === true){
+                  document.getElementById('questionOfCommute').classList.remove('invalid');
+                  answerCommute = $(this).val();
+                };
+              });
+              if(answerCommute !== undefined){
+                console.log('Q6.有資料');
+                return answerCommute;  
+              } else if(questionOfTherapy() !== undefined && questionOfTherapy().indexOf('居家醫療') != -1){
+                document.getElementById('questionOfCommute').classList.remove('invalid');
+                answerCommute = '居家醫療';
+                console.log('Q3.為居家醫療免填');
+                return answerCommute;
+              } else {
+                console.log('Q6.無資料');
+                document.getElementById('questionOfCommute').classList.add('invalid');
+                document.querySelector('#questionOfCommute input').focus();
+              }
+            }
+
+            //Q7 Time
+            var questionOfTime = function(){
+              var answerTime;
+              $('[name="time"]').each(function(){
+                if($(this).prop('checked') === true){
+                  document.getElementById('questionOfTime').classList.remove('invalid');
+                  answerTime = $(this).val();
+                };
+              });
+              if(answerTime !== undefined){
+                console.log('Q7.有資料');
+                return answerTime;
+              } else {
+                console.log('Q7.無資料');
+                document.getElementById('questionOfTime').classList.add('invalid');
+                document.querySelector('#questionOfTime input').focus();
+              }
+            }
+            
+            //Q8 Other
+            var questionOfOther = function(){
+              var answerOther = $('#other').val() || '未填寫';
+              answerOther = answerOther.replace(/<[^>]+>/g, '');
+              return answerOther;
+            }
+            
+            
+            console.log(`年齡:${questionOfAge()}; 性別:${questionOfGender()}; 治療:${questionOfTherapy()}; 科別:${questionOfClass()}; 滿意度:${questionOfTable()}; 交通:${questionOfCommute()}; 時間:${questionOfTime()}; 其他意見:${questionOfOther()}`)
+
+            var data = {
+              'Q1': questionOfAge(),
+              'Q2': questionOfGender(),
+              'Q3': questionOfTherapy(),
+              'Q4': questionOfClass(),
+              'Q5': questionOfTable(),
+              'Q6': questionOfCommute(),
+              'Q7': questionOfTime(),
+              'Q8': questionOfOther(),
+            }
+            dataVerifyandSent(data);
+
+          });
+        });
+
+        //輸入確認
+        let inputTherapy = document.getElementById('therapy4Text')
+        inputTherapy.addEventListener('blur', function(e){
+          let regex = new RegExp(/^[\u4e00-\u9fa5]{1,10}$/);
+          let data = this.value
+          console.log(data)
+          console.log(regex.test(data))
+          if($('#therapy4').prop('checked') === true){
+            if(regex.test(data) != true){
+              $('#therapy4Text').addClass('invalid');
+              $('#therapy4TextError').addClass('errorMsgShow');
+              $('#therapy4Text').focus();
+            } else {
+              $('#therapy4Text').removeClass('invalid');
+              $('#therapy4TextError').removeClass('errorMsgShow');
+            }
+          } else{
+              $('#therapy4Text').removeClass('invalid');
+              $('#therapy4TextError').removeClass('errorMsgShow');
+          }
+        })
+
+        let inputClass = document.getElementById('class5Text')
+        inputClass.addEventListener('blur', function(e){
+          let regex = new RegExp(/^[\u4e00-\u9fa5]{1,10}科$/);
+          let data = this.value
+          console.log(data)
+          console.log(regex.test(data))
+          if($('#class5').prop('checked') === true){
+            if(regex.test(data) != true){
+              $('#class5Text').addClass('invalid');
+              $('#class5TextError').addClass('errorMsgShow');
+              $('#class5Text').focus();
+            } else {
+              $('#class5Text').removeClass('invalid');
+              $('#class5TextError').removeClass('errorMsgShow');
+            }
+          } else{
+              $('#class5Text').removeClass('invalid');
+              $('#class5TextError').removeClass('errorMsgShow');
+          }
+        })
+        
+        function dataVerifyandSent(data){
+
+          for(const key in data){
+            if(data[key] === undefined){
+              alert('請確認資料是否都已填寫完畢？')
+              return
+            }
+          }
+
+          var result = {
+            'entry.1214767880': data.Q1,
+            'entry.1214767880': data.Q2,
+            'entry.1277615930': data.Q3,
+            'entry.1126575376': data.Q4,
+            'entry.928827925': data.Q5[0],
+            'entry.766914088': data.Q5[1],
+            'entry.1665012988': data.Q5[2],
+            'entry.319659028': data.Q5[3],
+            'entry.1371438031': data.Q5[4],
+            'entry.2069417640': data.Q5[5],
+            'entry.29773802': data.Q5[6],
+            'entry.431032263': data.Q5[7],
+            'entry.1608888542': data.Q5[8],
+            'entry.1200391884': data.Q5[9],
+            'entry.129974379': data.Q6,
+            'entry.1406410579': data.Q7,
+            'entry.996043833': data.Q8
+          }
+          console.log(result)
+          $.ajax({
+              type: 'POST',
+              url: 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSe0h8kaATF-UtQzTdhZwQPP4I-tuwkqiao_1hmcaDEWMtS0Ag/formResponse',
+              data: result,
+              contentType: 'application/json',
+              dataType: 'json',
+              complete: function(){
+                alert('資料已送出!');
+              }
+            }
+          )
+          
+          
+
+
+        }
+    </script>
+  </body>
+</html>
